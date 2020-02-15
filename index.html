@@ -1,0 +1,112 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--  <meta http-equiv="X-UA-Compatible"content="ie=edge"> -->
+        <title> Pokemon</title>
+        <style>
+            body{
+                display: flex;
+                background: #f6bd20;
+                align-items:center;
+                margin:auto;
+                height: 100vh;
+            }
+            div{
+                display: flex;
+                flex:1;   
+                align-items: center;
+                flex-direction: column;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+        <div>
+            <img src="" id="pokemon" height="200" style="margin: 0rem;">
+            <h1 id="nombre" ></h1>
+        </div>
+        <div>
+            <input type="number" id="input" style="background-color: antiquewhite;">
+            <button  onclick="mama()" id="button" style="border-radius: 40% ; border-color:black; width: 12em; height: 2.2rem; margin-top: 1rem; background-color:green; color: aliceblue;"> 
+                Seleccione el pokemon
+            </button>
+        </div>
+        </div>
+        <script>
+            class API {
+                BASE_URL = 'https://pokeapi.co/api/v2/pokemon'
+               
+                async fetch(){
+                    const searchID = this.id
+                    const response = await fetch(`${this.BASE_URL}/${searchID}`)
+                    const data = await response.json()
+                    this.pokemon = data
+                    return data
+                }
+                 /*
+                fetch(){
+                    const searchID = this.id
+                    fetch(`${this.BASE_URL}/${searchID}`,{    
+                    })
+                    .then(response => response.json())
+                    .then((data) => {
+                        this.pokemon = data;
+                        return data
+                    })                
+                }
+                */
+                    
+                }
+            
+            class Pokemon extends API{
+                $name = document.querySelector('#nombre')
+                $img = document.querySelector('#pokemon')
+                constructor(id){ 
+                    super(id)
+                    this.id = id 
+                }
+                renderName (text){
+                    this.$name.textContent = text
+                }
+                renderImage (url) {
+                    this.$img.setAttribute('src', url)
+                }
+            }
+            
+            
+            function mama(){
+                var number = document.getElementById("input").value
+                const pokemon = new Pokemon(number)
+                pokemon.fetch()
+                .then((daata) => {
+                    
+                    pokemon.renderName(daata.name)
+                    pokemon.renderImage(daata.sprites.front_default)
+                }).catch(()=> {pokemon.renderName('Pokemon no encontrado')})
+                
+            }
+            
+
+            /*
+            function mama(){
+               
+                fetch('https://pokeapi.co/api/v2/pokemon/'+number, {
+                })
+                .then(res => 
+                     res.json()
+                )
+                .then(data  => {
+                   anuma(data.name , data.sprites.front_default)
+                })
+                .catch( () => {anuma('Pokemon no encontrado')})
+            
+            }
+            */
+        </script>
+
+    </body>
+
+
+</html>
